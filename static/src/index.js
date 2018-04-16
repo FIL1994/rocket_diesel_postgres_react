@@ -5,5 +5,6 @@ import App from './App';
 
 import "ag-grid/dist/styles/ag-grid.css";
 import "ag-grid/dist/styles/ag-theme-material.css";
+import 'react-toastify/dist/ReactToastify.css';
 
 ReactDOM.render(<App />, document.getElementById('root'));
