@@ -5,6 +5,7 @@ import _ from "lodash";
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
 import { ToastContainer, toast } from "react-toastify";
 
+import NumericEditor from "grid/NumericEditor";
 import "./App.css";
 
 class App extends Component {
@@ -52,6 +53,9 @@ class App extends Component {
             enableFilter
             enableColResize
             domLayout="autoHeight"
+            frameworkComponents={{
+              numericEditor: NumericEditor
+            }}
           >
             <AgGridColumn field="id" />
             <AgGridColumn
@@ -64,7 +68,12 @@ class App extends Component {
               field="body"
               onCellValueChanged={this.updateField}
             />
-            <AgGridColumn field="published" />
+            <AgGridColumn
+              editable
+              field="published"
+              cellEditor="agSelectCellEditor"
+              cellEditorParams={{ values: [true, false] }}
+            />
           </AgGridReact>
         </div>
         <ToastContainer
