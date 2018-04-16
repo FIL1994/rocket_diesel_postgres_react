@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS images (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR NOT NULL,
+  img_url TEXT NOT NULL,
+  author TEXT NOT NULL,
+  lat INTEGER NOT NULL,
+  lng INTEGER NOT NULL,
+  comments TEXT NOT NULL
+)

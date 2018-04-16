@@ -7,6 +7,7 @@ table! {
         lat -> Int4,
         lng -> Int4,
         comments -> Text,
+        likes -> Int8,
     }
 }
 
