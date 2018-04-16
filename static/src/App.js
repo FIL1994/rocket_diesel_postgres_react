@@ -35,6 +35,12 @@ class App extends Component {
     return res;
   }
 
+  updateField = async ({ data, newValue, oldValue }) => {
+    if (newValue === oldValue) return;
+    await this.updatePost(data);
+    this.getPosts();
+  };
+
   render() {
     return (
       <Container>
@@ -51,20 +57,12 @@ class App extends Component {
             <AgGridColumn
               editable
               field="title"
-              onCellValueChanged={async ({ data, newValue, oldValue }) => {
-                if (newValue === oldValue) return;
-                await this.updatePost(data);
-                this.getPosts();
-              }}
+              onCellValueChanged={this.updateField}
             />
             <AgGridColumn
               editable
               field="body"
-              onCellValueChanged={async ({ data, newValue, oldValue }) => {
-                if (newValue === oldValue) return;
-                await this.updatePost(data);
-                this.getPosts();
-              }}
+              onCellValueChanged={this.updateField}
             />
             <AgGridColumn field="published" />
           </AgGridReact>
