@@ -29,10 +29,23 @@ pub fn get_post(postid: i32, conn: DbConn) -> QueryResult<Json<Post>> {
         .map(|x| Json(x))
 }
 
-#[put("/posts/<postid>")]
-pub fn update_post(postid: i32, conn: DbConn) -> QueryResult<Json<Post>> {
+#[put("/posts/publish/<postid>")]
+pub fn publish_post(postid: i32, conn: DbConn) -> QueryResult<Json<Post>> {
     diesel::update(posts.find(postid))
         .set(published.eq(true))
+        .get_result::<Post>(&*conn)
+        .map(|x| Json(x))
+}
+
+#[put("/posts/<postid>", data="<newpost>")]
+pub fn update_post(postid: i32, newpost: Json<NewPost>, conn: DbConn) -> QueryResult<Json<Post>> {
+    let post = newpost.clone();
+
+    diesel::update(posts.find(postid))
+        .set((
+            title.eq(post.title),
+            body.eq(post.body),
+        ))
         .get_result::<Post>(&*conn)
         .map(|x| Json(x))
 }

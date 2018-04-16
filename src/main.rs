@@ -40,15 +40,15 @@ fn main() {
 
     let options = rocket_cors::Cors {
         allowed_origins: allowed_origins,
-        allowed_methods: vec![Method::Get].into_iter().map(From::from).collect(),
-        allowed_headers: AllowedHeaders::some(&["Authorization", "Accept"]),
+        allowed_methods: vec![Method::Get, Method::Put, Method::Post].into_iter().map(From::from).collect(),
+        allowed_headers: AllowedHeaders::all(),
         allow_credentials: true,
         ..Default::default()
     };
 
     rocket::ignite()
         .manage(pool::init(&database_url))
-        .mount("/api", routes![get_posts, get_post, create_post, delete_post, update_post, get_all_posts])
+        .mount("/api", routes![get_posts, get_post, create_post, delete_post, update_post, get_all_posts, publish_post])
         .mount("/", routes![self::file_server::files, self::file_server::home])
         .attach(options)
         .launch();

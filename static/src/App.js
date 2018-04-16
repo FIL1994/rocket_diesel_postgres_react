@@ -11,25 +11,45 @@ class App extends Component {
     posts: []
   };
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.getPosts();
+  }
+
+  async getPosts() {
     const res = await axios.get("http://192.168.0.42/api/posts/all");
-    console.log("res", res);
     this.setState({ posts: res.data });
+    return res;
+  }
+
+  async updatePost(post) {
+    const res = await axios.put(`http://192.168.0.42/api/posts/${post.id}`, post);
+    return res;
   }
 
   render() {
     return (
       <Container>
         <Header as="h1">Posts</Header>
-        <div
-          className="ag-theme-material"
-          style={{ height: 650, width: "100%", marginTop: 15 }}
-        >
-          <AgGridReact rowData={this.state.posts}>
-            <AgGridColumn autoHeight field="id" />
-            <AgGridColumn autoHeight field="title" />
-            <AgGridColumn autoHeight field="body" />
-            <AgGridColumn autoHeight field="published" />
+        <div className="ag-theme-material">
+          <AgGridReact
+            rowData={this.state.posts}
+            enableSorting
+            enableFilter
+            enableColResize
+            domLayout="autoHeight"
+          >
+            <AgGridColumn field="id" />
+            <AgGridColumn
+              editable
+              field="title"
+              onCellValueChanged={async ({ data, newValue, oldValue }) => {
+                console.log("title changed", data, newValue, oldValue);
+                await this.updatePost(data)
+                this.getPosts();
+              }}
+            />
+            <AgGridColumn editable field="body" />
+            <AgGridColumn field="published" />
           </AgGridReact>
         </div>
       </Container>
