@@ -7,6 +7,16 @@ import { AgGridColumn, AgGridReact } from "ag-grid-react";
 import "./App.css";
 
 class App extends Component {
+  state = {
+    posts: []
+  };
+
+  async componentDidMount() {
+    const res = await axios.get("http://192.168.0.42/api/posts/all");
+    console.log("res", res);
+    this.setState({ posts: res.data });
+  }
+
   render() {
     return (
       <Container>
