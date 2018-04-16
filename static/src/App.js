@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container } from "semantic-ui-react";
+import { Container, Header } from "semantic-ui-react";
 import axios from "axios";
 import _ from "lodash";
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
@@ -20,11 +20,17 @@ class App extends Component {
   render() {
     return (
       <Container>
+        <Header as="h1">Posts</Header>
         <div
           className="ag-theme-material"
           style={{ height: 650, width: "100%", marginTop: 15 }}
         >
-          <AgGridReact />
+          <AgGridReact rowData={this.state.posts}>
+            <AgGridColumn autoHeight field="id" />
+            <AgGridColumn autoHeight field="title" />
+            <AgGridColumn autoHeight field="body" />
+            <AgGridColumn autoHeight field="published" />
+          </AgGridReact>
         </div>
       </Container>
     );
