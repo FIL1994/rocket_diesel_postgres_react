@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Container, Header } from "semantic-ui-react";
 import axios from "axios";
 import _ from "lodash";
+import { toBoolean } from "underscore.string";
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -36,8 +37,19 @@ class App extends Component {
     return res;
   }
 
-  updateField = async ({ data, newValue, oldValue }) => {
+  updateField = async (
+    { data, newValue, oldValue },
+    boolean = false,
+    field = ""
+  ) => {
+    if (boolean) {
+      newValue = toBoolean(newValue);
+      oldValue = toBoolean(oldValue);
+      data[field] = newValue;
+    }
+
     if (newValue === oldValue) return;
+    console.log("udate field", data, newValue, oldValue);
     await this.updatePost(data);
     this.getPosts();
   };
@@ -71,6 +83,9 @@ class App extends Component {
             <AgGridColumn
               editable
               field="published"
+              onCellValueChanged={info =>
+                this.updateField(info, true, "published")
+              }
               cellEditor="agSelectCellEditor"
               cellEditorParams={{ values: [true, false] }}
             />

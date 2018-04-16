@@ -38,11 +38,12 @@ pub fn publish_post(postid: i32, conn: DbConn) -> QueryResult<Json<Post>> {
 }
 
 #[put("/posts/<postid>", data="<newpost>")]
-pub fn update_post(postid: i32, newpost: Json<NewPost>, conn: DbConn) -> QueryResult<Json<Post>> {
+pub fn update_post(postid: i32, newpost: Json<Post>, conn: DbConn) -> QueryResult<Json<Post>> {
     diesel::update(posts.find(postid))
         .set((
             title.eq(&newpost.title),
             body.eq(&newpost.body),
+            published.eq(&newpost.published)
         ))
         .get_result::<Post>(&*conn)
         .map(|x| Json(x))
