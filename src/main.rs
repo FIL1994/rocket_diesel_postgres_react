@@ -22,9 +22,8 @@ mod schema;
 mod models;
 mod pool;
 mod routes;
-mod file_server;
 
-use self::routes::*;
+use self::routes::{file_server, routes_posts::*};
 use self::models::*;
 use dotenv::dotenv;
 use std::env;
@@ -50,7 +49,7 @@ fn main() {
     rocket::ignite()
         .manage(pool::init(&database_url))
         .mount("/api", routes![get_posts, get_post, create_post, delete_post, update_post, get_all_posts, publish_post])
-        .mount("/", routes![self::file_server::files, self::file_server::home])
+        .mount("/", routes![file_server::files, file_server::home])
         .attach(options)
         .launch();
 }
