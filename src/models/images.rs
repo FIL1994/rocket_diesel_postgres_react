@@ -20,6 +20,5 @@ pub struct NewImage {
     pub author: String,
     pub lat: i32,
     pub lng: i32,
-    pub comments: String,
-    pub likes: i64
+    pub comments: String
 }
