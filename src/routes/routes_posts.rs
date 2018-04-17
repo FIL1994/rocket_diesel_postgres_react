@@ -4,9 +4,9 @@ use diesel::prelude::*;
 
 use pool::DbConn;
 use schema::posts::{self, dsl::*};
-use {post::*, images::*};
+use post::*;
 
-#[get("/posts")]
+#[get("/")]
 pub fn get_posts(conn: DbConn) -> QueryResult<Json<Vec<Post>>> {
     posts.filter(published.eq(true))
         .order(id.desc())
@@ -15,21 +15,21 @@ pub fn get_posts(conn: DbConn) -> QueryResult<Json<Vec<Post>>> {
         .map(|xs| Json(xs))
 }
 
-#[get("/posts/all")]
+#[get("/all")]
 pub fn get_all_posts(conn: DbConn) -> QueryResult<Json<Vec<Post>>> {
     posts.order(id.desc())
         .load::<Post>(&*conn)
         .map(|xs| Json(xs))
 }
 
-#[get("/posts/<postid>")]
+#[get("/<postid>")]
 pub fn get_post(postid: i32, conn: DbConn) -> QueryResult<Json<Post>> {
     posts.find(postid)
         .get_result::<Post>(&*conn)
         .map(|x| Json(x))
 }
 
-#[put("/posts/publish/<postid>")]
+#[put("/publish/<postid>")]
 pub fn publish_post(postid: i32, conn: DbConn) -> QueryResult<Json<Post>> {
     diesel::update(posts.find(postid))
         .set(published.eq(true))
@@ -37,7 +37,7 @@ pub fn publish_post(postid: i32, conn: DbConn) -> QueryResult<Json<Post>> {
         .map(|x| Json(x))
 }
 
-#[put("/posts/<postid>", data="<newpost>")]
+#[put("/<postid>", data="<newpost>")]
 pub fn update_post(postid: i32, newpost: Json<Post>, conn: DbConn) -> QueryResult<Json<Post>> {
     diesel::update(posts.find(postid))
         .set((
@@ -49,7 +49,7 @@ pub fn update_post(postid: i32, newpost: Json<Post>, conn: DbConn) -> QueryResul
         .map(|x| Json(x))
 }
 
-#[post("/posts", data="<newpost>")]
+#[post("/", data="<newpost>")]
 pub fn create_post(newpost: Json<NewPost>, conn: DbConn) -> QueryResult<Json<Post>> {
     diesel::insert_into(posts::table)
         .values(&newpost.into_inner())
@@ -57,7 +57,7 @@ pub fn create_post(newpost: Json<NewPost>, conn: DbConn) -> QueryResult<Json<Pos
         .map(|x| Json(x))
 }
 
-#[delete("/posts/<postid>")]
+#[delete("/<postid>")]
 pub fn delete_post(postid: i32, conn: DbConn) -> QueryResult<Json<usize>> {
     diesel::delete(posts.filter(id.eq(postid)))
         .execute(&*conn)

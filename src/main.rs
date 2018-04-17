@@ -23,7 +23,7 @@ mod models;
 mod pool;
 mod routes;
 
-use self::routes::{file_server, routes_posts::*};
+use self::routes::{file_server, routes_posts::*, routes_images::*};
 use self::models::*;
 use dotenv::dotenv;
 use std::env;
@@ -36,10 +36,8 @@ fn main() {
     
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
 
-    let (allowed_origins, _failed_origins) = AllowedOrigins::some(&["http://192.168.0.42:3000"]);
-
     let options = rocket_cors::Cors {
-        allowed_origins: allowed_origins,
+        allowed_origins: AllowedOrigins::all(),
         allowed_methods: vec![Method::Get, Method::Put, Method::Post].into_iter().map(From::from).collect(),
         allowed_headers: AllowedHeaders::all(),
         allow_credentials: true,
@@ -48,7 +46,8 @@ fn main() {
 
     rocket::ignite()
         .manage(pool::init(&database_url))
-        .mount("/api", routes![get_posts, get_post, create_post, delete_post, update_post, get_all_posts, publish_post])
+        .mount("/api/posts", routes![get_posts, get_post, create_post, delete_post, update_post, get_all_posts, publish_post])
+        .mount("/api/images", routes![get_images, create_image])
         .mount("/", routes![file_server::files, file_server::home])
         .attach(options)
         .launch();
