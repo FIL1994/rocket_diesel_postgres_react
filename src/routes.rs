@@ -3,8 +3,8 @@ use rocket_contrib::Json;
 use diesel::prelude::*;
 
 use super::pool::DbConn;
-use super::models::*;
 use super::schema::posts::{self, dsl::*};
+use super::{post::*, images::*};
 
 #[get("/posts")]
 pub fn get_posts(conn: DbConn) -> QueryResult<Json<Vec<Post>>> {

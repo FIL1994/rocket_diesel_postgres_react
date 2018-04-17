@@ -25,6 +25,7 @@ mod routes;
 mod file_server;
 
 use self::routes::*;
+use self::models::*;
 use dotenv::dotenv;
 use std::env;
 
