@@ -3,15 +3,18 @@ address = "0.0.0.0"
 port = 80
 workers = 4
 log = "normal"
+secret_key = "OvPCMTVOyM+alfPk/D0A9eegZhx6ix9YbtDr9ISiYp8="
 
 [staging]
 address = "0.0.0.0"
-port = 80
+port = 3000
 workers = 4
 log = "normal"
+secret_key = "Qj3zZ45LvKj4SllRfRXcjoX0EDO8IioO+SF9nBKJFbY="
 
 [production]
 address = "0.0.0.0"
-port = 3000
+port = 80
 workers = 4
 log = "critical"
+secret_key = "oj3IXws768/OnNGgZLRIBmHpOIGDmUEmovijajVtPCA="
