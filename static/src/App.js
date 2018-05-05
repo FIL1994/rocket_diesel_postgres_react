@@ -9,6 +9,8 @@ import { ToastContainer, toast } from "react-toastify";
 import NumericEditor from "grid/NumericEditor";
 import "./App.css";
 
+const URL = "http://192.168.0.47";
+
 class App extends Component {
   state = {
     posts: []
@@ -19,14 +21,14 @@ class App extends Component {
   }
 
   async getPosts() {
-    const res = await axios.get("http://192.168.0.42/api/posts/all");
+    const res = await axios.get(URL + "/api/posts/all");
     this.setState({ posts: res.data });
     return res;
   }
 
   async updatePost(post) {
     const res = await axios
-      .put(`http://192.168.0.42/api/posts/${post.id}`, post)
+      .put(`${URL}/api/posts/${post.id}`, post)
       .catch(err => err);
     if (_.isError(res)) {
       toast.error("Failed to update post #" + post.id);
