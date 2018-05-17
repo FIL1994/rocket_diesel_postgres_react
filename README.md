@@ -1,5 +1,5 @@
 # rocket_diesel_postgres_react
-Rocket, Diesel, Postgres and React
+> Rocket, Diesel, Postgres and React
 
 
 ## Setup
