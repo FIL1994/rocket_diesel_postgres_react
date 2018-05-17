@@ -9,7 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import NumericEditor from "grid/NumericEditor";
 import "./App.css";
 
-const URL = "http://192.168.0.47";
+const URL = "http://0.0.0.0";
 
 class App extends Component {
   state = {
