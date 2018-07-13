@@ -6,6 +6,7 @@ pub struct Post {
     pub title: String,
     pub body: String,
     pub published: bool,
+    pub user_id: i32,
 }
 
 #[derive(Insertable, Deserialize, Clone)]
