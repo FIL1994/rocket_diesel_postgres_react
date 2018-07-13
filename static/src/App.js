@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Header } from "semantic-ui-react";
+import { Container, Header, Modal } from "semantic-ui-react";
 import axios from "axios";
 import _ from "lodash";
 import { toBoolean } from "underscore.string";
@@ -7,13 +7,13 @@ import { AgGridColumn, AgGridReact } from "ag-grid-react";
 import { ToastContainer, toast } from "react-toastify";
 
 import NumericEditor from "grid/NumericEditor";
-import "./App.css";
-
-const URL = "http://192.168.0.47";
+import { URL } from "./constants";
+import Fab from "./components/Fab";
 
 class App extends Component {
   state = {
-    posts: []
+    posts: [],
+    openModal: false
   };
 
   componentDidMount() {
@@ -60,6 +60,7 @@ class App extends Component {
     return (
       <Container>
         <Header as="h1">Posts</Header>
+        <Fab icon="add" />
         <div className="ag-theme-material">
           <AgGridReact
             rowData={this.state.posts}
@@ -93,6 +94,11 @@ class App extends Component {
             />
           </AgGridReact>
         </div>
+        <Modal
+          isOpen={this.state.openModal}
+          onClose={() => this.setState({ openModal: false })}
+          children={<div />}
+        />
         <ToastContainer
           className="my-toast"
           position={toast.POSITION.BOTTOM_CENTER}
